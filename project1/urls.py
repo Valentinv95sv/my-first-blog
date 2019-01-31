@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls import include, url
+from django.contrib.auth import views
+from blog import views as v
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'', include('blog.urls'))
+    url(r'^account/login/$', views.LoginView.as_view(), name='login'),
+    url(r'^account/logout', views.LogoutView.as_view(next_page='/'), name='logout'),
+    url(r'', include('blog.urls')),
+    url(r'^post/(?P<pk>\d+)/comment/$', v.add_comment_to_post, name='add_comment_to_post'),
 ]
